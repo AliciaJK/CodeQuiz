@@ -2,14 +2,13 @@
 
 var timerEl = document.getElementById('countdown');
 var mainEl = document.getElementById('main');
+var youLost = "You ran out of time! Game Over!"
+var question ='Text';
 
-var message =
-  'Text';
-var words = message.split(' ');
 
-// Timer that counts down from 5
+// Timer that counts 
 function countdown() {
-  var timeLeft = 5;
+  var timeLeft = 45;
 
   // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
   var timeInterval = setInterval(function () {
@@ -31,27 +30,12 @@ function countdown() {
       // Call the `displayMessage()` function
       displayMessage();
     }
-  }, 100000);
+  }, 1000);
 }
 
 // Displays the message one word at a time
 function displayMessage() {
-  var wordCount = 0;
-
-  // Uses the `setInterval()` method to call a function to be executed every 1000 milliseconds
-  var msgInterval = setInterval(function () {
-    // If there are no more words left in the message
-    if (words[wordCount] === undefined) {
-      // Use `clearInterval()` to stop the timer
-      clearInterval(msgInterval);
-    } else {
-      // Display one word of the message
-      mainEl.textContent = words[wordCount];
-      wordCount++;
-    }
-  }, 1000);
-}
-
+  
 countdown();
 
 //------------------End - Timer----------------------------------------------------------------------------------//
@@ -65,27 +49,29 @@ countdown();
 
 
       // this will keep the scores in local storage
+var name = $('input[name="shopping-input"]').val();
+console.log(name)
 
-var firstNameInput = document.querySelector("#first-name");
-var lastNameInput = document.querySelector("#last-name");
-var emailInput = document.querySelector("#email");
-var passwordInput = document.querySelector("#password");
-var signUpButton = document.querySelector("#sign-up");
+// if there's nothing in the form entered, don't print to the page
+if (!name) {
+  console.log('No shopping item filled out in form!');
+  return;
+}
 
-signUpButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  
-  // create user object from submission
+// print to the page
+highScores.append('<li>' + name + '</li>');
+
+ 
+//user name for high score
   var user = {
-    firstName: firstNameInput.value.trim(),
-    email: emailInput.value.trim(),
-    password: passwordInput.value.trim()
+    name: nameInput.value.trim(),
+
   };
 
   // set new submission to local storage 
   localStorage.setItem("user", JSON.stringify(user));
   
-});
+};
 
 //-----------logic for correct and incorrect
 //if correct, then perform correct fucntion
@@ -97,3 +83,35 @@ signUpButton.addEventListener("click", function(event) {
 
 //incorrect funtion
   //go to next question
+
+  //--------questions-------------------------------------------------------------------------------------------------------//
+  var theQuestions = [
+    {
+      question: "Who invented JavaScript?",
+      answers: {
+        a: "Douglas Crockford",
+        b: "Sheryl Sandberg",
+        c: "Brendan Eich"
+      },
+      correctAnswer: "c"
+    },
+    {
+      question: "Which one of these is a JavaScript package manager?",
+      answers: {
+        a: "Node.js",
+        b: "TypeScript",
+        c: "npm"
+      },
+      correctAnswer: "c"
+    },
+    {
+      question: "Which tool can you use to ensure code quality?",
+      answers: {
+        a: "Angular",
+        b: "jQuery",
+        c: "RequireJS",
+        d: "ESLint"
+      },
+      correctAnswer: "d"
+    }
+  ];
