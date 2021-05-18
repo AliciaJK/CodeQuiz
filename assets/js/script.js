@@ -2,116 +2,168 @@
 
 var timerEl = document.getElementById('countdown');
 var mainEl = document.getElementById('main');
+var displayTime = document.getElementById('displayTime');
 var youLost = "You ran out of time! Game Over!"
 var question ='Text';
 
 
 // Timer that counts 
-function countdown() {
-  var timeLeft = 45;
+timerEl.addEventListener("click", function() {
+  var timeLeft = 5;
 
+  
   // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
   var timeInterval = setInterval(function () {
+    startQuiz();
     // As long as the `timeLeft` is greater than 1
     if (timeLeft > 1) {
       // Set the `textContent` of `timerEl` to show the remaining seconds
-      timerEl.textContent = timeLeft + ' seconds remaining';
+      displayTime.textContent = timeLeft + ' seconds remaining'; //add a new variable to display the countdown 
       // Decrement `timeLeft` by 1
       timeLeft--;
     } else if (timeLeft === 1) {
       // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-      timerEl.textContent = timeLeft + ' second remaining';
+      displayTime.textContent = timeLeft + ' second remaining';
       timeLeft--;
     } else {
       // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-      timerEl.textContent = '';
+      displayTime.textContent = '';
       // Use `clearInterval()` to stop the timer
       clearInterval(timeInterval);
       // Call the `displayMessage()` function
       displayMessage();
     }
   }, 1000);
+})
+function displayMessage(){
+console.log("End of timer")
+
 }
 
-// Displays the message one word at a time
-function displayMessage() {
-  
-countdown();
+//------------------ Variables------------------------------------------------------------------------------//
 
-//------------------End - Timer----------------------------------------------------------------------------------//
-
-// Need to create the questions in html? 
-
-
-
-//need to create the high score button fucntion
-      //screen goes blank and the 
+var quizContainer = document.getElementById('quiz');
+var questionContainer = document.getElementById('question');
+var answerContainer = document.getElementById('answer');
+var resultsContainer = document.getElementById('results');
+var submitButton = document.getElementById('submit');
+var i = 0
 
 
-      // this will keep the scores in local storage
-var name = $('input[name="shopping-input"]').val();
-console.log(name)
+//--------questions-----I got these from someone on the internet ---------------------------------------------------------//
+var theQuestions = [
+  {
+    question: "Who was the first programmer?",
+    answers: [
+      "Ada Lovelace",
+      "Grace Hopper",
+      "Albert Einstein"
+    ],
+    correctAnswer: "a"
+  },
+  {
+    question: "The first computer game was created in what year?",
+    answers: {
+      a: "1853",
+      b: "1986",
+      c: "1961"
+    },
+    correctAnswer: "c"
+  },
+  {
+    question: "What are problems in coding called?",
+    answers: {
+      a: "Story",
+      b: "Bug",
+      c: "Epic",
+    },
+    correctAnswer: "b"
+  }
+]
 
-// if there's nothing in the form entered, don't print to the page
-if (!name) {
-  console.log('No shopping item filled out in form!');
-  return;
+  //need to create a for loop for to display the questions 
+function startQuiz(){
+  questionContainer.textContent = theQuestions[i].question
+  answerContainer.textContent = theQuestions[i].answers
+  // answerContainer.textContent = theQuestions[0].answers.b
+  // answerContainer.textContent = theQuestions[0].answers.c
+ // quizContainer.textContent = theQuestions[0].correctAnswer
+//take answer
+i++
+
 }
 
-// print to the page
-highScores.append('<li>' + name + '</li>');
+//-----------logic for correct and incorrect-----------------------------------------------------------//
 
- 
-//user name for high score
-  var user = {
-    name: nameInput.value.trim(),
 
-  };
 
-  // set new submission to local storage 
-  localStorage.setItem("user", JSON.stringify(user));
+
+
+//---------High scores-----------------------------------------------------------------------
+function addScore(event) {
+  event.preventDefault();
+
+  finalEl.style.display = "none";
+  highscoresEl.style.display = "block";
+
+  let init = initialsInput.value.toUpperCase();
+  scoreList.push({ initials: init, score: secondsLeft });
+
+  // sort scores
+  scoreList = scoreList.sort((a, b) => {
+      if (a.score < b.score) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
   
-};
+  scoreListEl.innerHTML="";
+  for (let i = 0; i < scoreList.length; i++) {
+      let li = document.createElement("li");
+      li.textContent = `${scoreList[i].initials}: ${scoreList[i].score}`;
+      scoreListEl.append(li);
+  }
 
-//-----------logic for correct and incorrect
-//if correct, then perform correct fucntion
-//if incorrect, then perform incorrect function
+  // Add to local storage
+  storeScores();
+  displayScores();
+}
 
-//correct function
-   // add 10 to the score & go to next question
-   //store the score
+function storeScores() {
+  localStorage.setItem("scoreList", JSON.stringify(scoreList));
+}
 
-//incorrect funtion
-  //go to next question
+function displayScores() {
+  // Get stored scores from localStorage
+  // Parsing the JSON string to an object
+  let storedScoreList = JSON.parse(localStorage.getItem("scoreList"));
 
-  //--------questions-------------------------------------------------------------------------------------------------------//
-  var theQuestions = [
-    {
-      question: "Who invented JavaScript?",
-      answers: {
-        a: "Douglas Crockford",
-        b: "Sheryl Sandberg",
-        c: "Brendan Eich"
-      },
-      correctAnswer: "c"
-    },
-    {
-      question: "Which one of these is a JavaScript package manager?",
-      answers: {
-        a: "Node.js",
-        b: "TypeScript",
-        c: "npm"
-      },
-      correctAnswer: "c"
-    },
-    {
-      question: "Which tool can you use to ensure code quality?",
-      answers: {
-        a: "Angular",
-        b: "jQuery",
-        c: "RequireJS",
-        d: "ESLint"
-      },
-      correctAnswer: "d"
-    }
-  ];
+  // If scores were retrieved from localStorage, update the scorelist array to it
+  if (storedScoreList !== null) {
+      scoreList = storedScoreList;
+  }
+}
+
+// clear scores
+function clearScores() {
+  localStorage.clear();
+  scoreListEl.innerHTML="";
+}
+
+// EventListeners
+// Start timer and display first question when click start quiz
+startBtn.addEventListener("click", startQuiz);
+
+// Check answers loop
+ansBtn.forEach(item => {
+  item.addEventListener('click', checkAnswer);
+});
+
+// Add score
+submitScrBtn.addEventListener("click", addScore);
+
+
+
+
+  
