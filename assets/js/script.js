@@ -1,169 +1,226 @@
-//------------------Start - Timer- this was taken from the homeworks----------------------------------------------------------------------//
+// var wordBlank = document.querySelector(".word-blanks");
+var win = document.querySelector(".win");
+var lose = document.querySelector(".lose");
+var timerElement = document.querySelector(".timer-count");
+var startButton = document.querySelector(".start-button");
 
-var timerEl = document.getElementById('countdown');
-var mainEl = document.getElementById('main');
-var displayTime = document.getElementById('displayTime');
-var youLost = "You ran out of time! Game Over!"
-var question ='Text';
+var chosenWord = "";
+var numBlanks = 0;
+var winCounter = 0;
+var loseCounter = 0;
+var isWin = false;
+var timer;
+var timerCount;
 
+// Arrays used to create blanks and letters on screen
+var lettersInChosenWord = [];
+// var blanksLetters = [];
 
-// Timer that counts 
-timerEl.addEventListener("click", function() {
-  var timeLeft = 5;
-
-  
-  // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-  var timeInterval = setInterval(function () {
-    startQuiz();
-    // As long as the `timeLeft` is greater than 1
-    if (timeLeft > 1) {
-      // Set the `textContent` of `timerEl` to show the remaining seconds
-      displayTime.textContent = timeLeft + ' seconds remaining'; //add a new variable to display the countdown 
-      // Decrement `timeLeft` by 1
-      timeLeft--;
-    } else if (timeLeft === 1) {
-      // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-      displayTime.textContent = timeLeft + ' second remaining';
-      timeLeft--;
-    } else {
-      // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-      displayTime.textContent = '';
-      // Use `clearInterval()` to stop the timer
-      clearInterval(timeInterval);
-      // Call the `displayMessage()` function
-      displayMessage();
-    }
-  }, 1000);
-})
-function displayMessage(){
-console.log("End of timer")
-
-}
-
-//------------------ Variables------------------------------------------------------------------------------//
-
-var quizContainer = document.getElementById('quiz');
-var questionContainer = document.getElementById('question');
-var answerContainer = document.getElementById('answer');
-var resultsContainer = document.getElementById('results');
-var submitButton = document.getElementById('submit');
-var i = 0
+// Array of words the user will guess
+var words = ["Question 1","Question 2", "Question 3", "Question 4", "Question 5"];
 
 
-//--------questions-----I got these from someone on the internet ---------------------------------------------------------//
-var theQuestions = [
+
+//QUESTIONS: 
+var questions = [
+  {
+    question: "Commonly used data types DO NOT include:",
+    options: ["string","booleans" , "alerts", "numbers"] ,
+    answer: "alerts",
+    
+  },
+  {
+    question: "The condition in an if/else statement is enclosed within what character/s.",
+    options: ["quotes","curly brackets", "parenthesis","square brackets"],
+    answer: "parenthesis",
+    
+  },
+  {
+    question: "Arrays in javascript can be used to store what information?",
+    options: ["numbers and strings","other arrays","booleans", "all of the above"],
+    answer: "all of the above",
+    
+  },
+  {
+    question: "String values must be enclosed within ___ when being assigned to variables",
+    options: ["semi-colon", "square brackets","quotes","parenthesis"],
+    answer: "quotes",
+    
+  },
   {
     question: "Who was the first programmer?",
-    answers: [
-      "Ada Lovelace",
-      "Grace Hopper",
-      "Albert Einstein"
-    ],
-    correctAnswer: "a"
-  },
-  {
-    question: "The first computer game was created in what year?",
-    answers: {
-      a: "1853",
-      b: "1986",
-      c: "1961"
-    },
-    correctAnswer: "c"
-  },
-  {
-    question: "What are problems in coding called?",
-    answers: {
-      a: "Story",
-      b: "Bug",
-      c: "Epic",
-    },
-    correctAnswer: "b"
+    options: ["Ada Lovelace", "Grace Hopper","Albert Einstein"],
+    answer: "Ada Lovelace",
+    
   }
 ]
 
-  //need to create a for loop for to display the questions 
-function startQuiz(){
-  questionContainer.textContent = theQuestions[i].question
-  answerContainer.textContent = theQuestions[i].answers
-  // answerContainer.textContent = theQuestions[0].answers.b
-  // answerContainer.textContent = theQuestions[0].answers.c
- // quizContainer.textContent = theQuestions[0].correctAnswer
-//take answer
-i++
-
+// The init function is called when the page loads 
+function init() {
+  getWins();
+  getlosses();
 }
 
-//-----------logic for correct and incorrect-----------------------------------------------------------//
+// The startGame function is called when the start button is clicked
+function startGame() {
+  isWin = false;
+  timerCount = 10;
+  // Prevents start button from being clicked when round is in progress
+  startButton.disabled = true;
+  renderBlanks()
+  startTimer()
+}
 
+// The winGame function is called when the win condition is met
+function winGame() {
+  wordBlank.textContent = "YOU WON!!!🏆 ";
+  winCounter++
+  startButton.disabled = false;
+  setWins()
+}
 
+// The loseGame function is called when timer reaches 0
+function loseGame() {
+  wordBlank.textContent = "GAME OVER";
+  loseCounter++
+  startButton.disabled = false;
+  setLosses()
+}
 
-
-
-//---------High scores-----------------------------------------------------------------------
-function addScore(event) {
-  event.preventDefault();
-
-  finalEl.style.display = "none";
-  highscoresEl.style.display = "block";
-
-  let init = initialsInput.value.toUpperCase();
-  scoreList.push({ initials: init, score: secondsLeft });
-
-  // sort scores
-  scoreList = scoreList.sort((a, b) => {
-      if (a.score < b.score) {
-        return 1;
-      } else {
-        return -1;
+// The setTimer function starts and stops the timer and triggers winGame() and loseGame()
+function startTimer() {
+  // Sets timer
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    if (timerCount >= 0) {
+      // Tests if win condition is met
+      if (isWin && timerCount > 0) {
+        // Clears interval and stops timer
+        clearInterval(timer);
+        winGame();
       }
-    });
-  
-  scoreListEl.innerHTML="";
-  for (let i = 0; i < scoreList.length; i++) {
-      let li = document.createElement("li");
-      li.textContent = `${scoreList[i].initials}: ${scoreList[i].score}`;
-      scoreListEl.append(li);
+    }
+    // Tests if time has run out
+    if (timerCount === 0) {
+      // Clears interval
+      clearInterval(timer);
+      loseGame();
+    }
+  }, 1000);
+}
+
+// Creates questions on screen
+function displayQuestions() {
+  // Randomly picks word from words array
+  chosenWord = words[Math.floor(Math.random() * words.length)];
+  lettersInChosenWord = chosenWord.split("");
+  numBlanks = lettersInChosenWord.length;
+  blanksLetters = []
+  // Uses loop to push blanks to blankLetters array
+  for (var i = 0; i < numBlanks; i++) {
+    blanksLetters.push("_");
   }
-
-  // Add to local storage
-  storeScores();
-  displayScores();
+  // Converts blankLetters array into a string and renders it on the screen
+  wordBlank.textContent = blanksLetters.join(" ")
 }
 
-function storeScores() {
-  localStorage.setItem("scoreList", JSON.stringify(scoreList));
+// Updates win count on screen and sets win count to client storage
+function setWins() {
+  win.textContent = winCounter;
+  localStorage.setItem("winCount", winCounter);
 }
 
-function displayScores() {
-  // Get stored scores from localStorage
-  // Parsing the JSON string to an object
-  let storedScoreList = JSON.parse(localStorage.getItem("scoreList"));
+// Updates lose count on screen and sets lose count to client storage
+function setLosses() {
+  lose.textContent = loseCounter;
+  localStorage.setItem("loseCount", loseCounter);
+}
 
-  // If scores were retrieved from localStorage, update the scorelist array to it
-  if (storedScoreList !== null) {
-      scoreList = storedScoreList;
+// These functions are used by init
+function getWins() {
+  // Get stored value from client storage, if it exists
+  var storedWins = localStorage.getItem("winCount");
+  // If stored value doesn't exist, set counter to 0
+  if (storedWins === null) {
+    winCounter = 0;
+  } else {
+    // If a value is retrieved from client storage set the winCounter to that value
+    winCounter = storedWins;
+  }
+  //Render win count to page
+  win.textContent = winCounter;
+}
+
+function getlosses() {
+  var storedLosses = localStorage.getItem("loseCount");
+  if (storedLosses === null) {
+    loseCounter = 0;
+  } else {
+    loseCounter = storedLosses;
+  }
+  lose.textContent = loseCounter;
+}
+
+function checkWin() {
+  // If the word equals the blankLetters array when converted to string, set isWin to true
+  if (chosenWord === blanksLetters.join("")) {
+    // This value is used in the timer function to test if win condition is met
+    isWin = true;
   }
 }
 
-// clear scores
-function clearScores() {
-  localStorage.clear();
-  scoreListEl.innerHTML="";
+// Tests if guessed letter is in word and renders it to the screen.
+function checkLetters(letter) {
+  var letterInWord = false;
+  for (var i = 0; i < numBlanks; i++) {
+    if (chosenWord[i] === letter) {
+      letterInWord = true;
+    }
+  }
+  if (letterInWord) {
+    for (var j = 0; j < numBlanks; j++) {
+      if (chosenWord[j] === letter) {
+        blanksLetters[j] = letter;
+      }
+    }
+    wordBlank.textContent = blanksLetters.join(" ");
+  }
 }
 
-// EventListeners
-// Start timer and display first question when click start quiz
-startBtn.addEventListener("click", startQuiz);
-
-// Check answers loop
-ansBtn.forEach(item => {
-  item.addEventListener('click', checkAnswer);
+// Attach event listener to document to listen for key event
+document.addEventListener("click", function(event) {
+  // If the count is zero, exit function
+  if (timerCount === 0) {
+    return;
+  }
+  // Convert all keys to lower case
+  var key = event.key.toLowerCase();
+  var alphabetNumericCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ".split("");
+  // Test if key pushed is letter
+  if (alphabetNumericCharacters.includes(key)) {
+    var letterGuessed = event.key;
+    checkLetters(letterGuessed)
+    checkWin();
+  }
 });
 
-// Add score
-submitScrBtn.addEventListener("click", addScore);
+// Attach event listener to start button to call startGame function on click
+startButton.addEventListener("click", startGame);
 
+// Calls init() so that it fires when page opened
+init();
 
+// Bonus: Add reset button
+var resetButton = document.querySelector(".reset-button");
 
-
-  
+function resetGame() {
+  // Resets win and loss counts
+  winCounter = 0;
+  loseCounter = 0;
+  // Renders win and loss counts and sets them into client storage
+  setWins()
+  setLosses()
+}
+// Attaches event listener to button
+resetButton.addEventListener("click", resetGame);
