@@ -120,19 +120,21 @@ function startTimer() {
 }
 
 // Creates questions on screen
-function displayQuestions() {
-  // Randomly picks word from words array
-  chosenWord = words[Math.floor(Math.random() * words.length)];
-  lettersInChosenWord = chosenWord.split("");
-  numBlanks = lettersInChosenWord.length;
-  blanksLetters = []
-  // Uses loop to push blanks to blankLetters array
-  for (var i = 0; i < numBlanks; i++) {
-    blanksLetters.push("_");
-  }
-  // Converts blankLetters array into a string and renders it on the screen
-  wordBlank.textContent = blanksLetters.join(" ")
-}
+function askQuestion(q){
+
+  mainQuestionArea.innerHTML = "" ;
+  mainQuestionArea.innerText= "Question: " + q.question;
+  q.options.forEach(element => {
+  var button =document.createElement("button")
+  button.className="btn-primary btn-block text-left"
+  button.innerText=element
+  mainQuestionArea.appendChild(button)
+  timerElement.innerText = "Timer: " + timerCount;
+  timerCount--;
+  button.addEventListener("click", displaynextQuestion)
+});
+
+};
 
 // Updates win count on screen and sets win count to client storage
 function setWins() {
