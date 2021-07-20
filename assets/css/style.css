@@ -48,7 +48,7 @@ button {
 }
 
 header {
-  padding: 40px;
+  padding: 5px;
   text-align: center;
   background: #13293d;
   color: #fff;
@@ -64,7 +64,7 @@ main {
 section {
   flex: 0 auto;
   padding: 8px;
-  margin-top: 50px;
+  margin-top: 5px;
   background-color: white;
   border-radius: 8px;
 }
@@ -89,9 +89,7 @@ section {
   padding: 20px;
 }
 
-.word-blanks {
-  line-height: 360px;
-}
+
 
 .large-font {
   font-size: 3.5em;
@@ -99,15 +97,15 @@ section {
 }
 
 .timer {
-  height: 240px;
-  padding: 10px;
+  height: 100px;
+  padding: 1px;
   background: #13293d;
   color: #fff;
   text-align: center;
 }
 
 .timer-text {
-  padding: 55px;
+  padding: 5px;
 }
 
 @media screen and (max-width: 1183px) {

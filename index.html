@@ -1,115 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Code Quiz</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
-    <header>
-      <div class= "large-font">Code Quiz</div>
-      <button class="start-button">Start</button>
-    </header>
-
-    <main>
-      <section>
-        <div class="card word-guess">
-          <div class="large-font word-blanks">J _ v _ S c r_ _t</div>
+    <div class="wrapper">
+      <header>
+        <h1>Code Quiz</h1>
+        <div class= "game timer">
+          <div class = "timer-text">
+          <div id="timerText" class="large-font timer-count">Timer: 60</div>
         </div>
-      </section>
-
-      <section>
-        <div class="card results">
-          <div class = "win-loss-container">
-          <div>
-          <h2>Wins: <span class="win">0 </span> </h2>
-          <h2>Losses: <span class="lose">0</span></h2>
+      </header>
+      <div class="game">
+        <div class="game-header">
+           <div class="game-footer">
+              <button id="start-button" class="btn">Start Quiz</button>
+            </div>
         </div>
-          <button class="reset-button">Reset Score</button>
-      </div>
-          <div class= "card timer">
-            <div class = "timer-text">
-            <div class="large-font timer-count">10</div>
-            <h3>seconds remaining</h3>
-          </div>
+        <div class="game-body" id="questionArea"> 
+          Try to answer the following code related questions with in the time limit. Keep in mind that for every incorrect answer 10 seconds will be taken off the clock.
         
-          </div>
         </div>
-      </section>
-    </main>
-    <script src="assets/js/script.js"></script>
+  
+       <div class="alert">
+         
+        </div>
+      </div>
+    </div>
+    <script src="./assets/js/script.js"></script>
   </body>
 </html>
-
-
-
-
-
-<!-- ------------------------------------------------------------------ -->
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="./assets/css/style.css" />
-  <title>Code Quiz</title>
-</head>
-
-<body>
-  <header class="wrapper">
-    <div class="container">
-      <h1>Code Quiz</h1>
-    </div>
-
-    <section>
-      <h2 id="displayTime"> </h2>
-      <button id="countdown">Start</button>
-    </section>
-
-    <!-- this is to hold the quiz -->
-    <!-- <div id="quiz">
-      <h2 id="question"> </h2>
-      <h2 id="answer"> </h2>
-    </div> -->
-
-    <main>
-      <section>
-        <div class="card word-guess">
-          <div class="large-font word-blanks">Questions</div>
-        </div>
-      </section>
-
-
-    <!-- This is to view the high scores-->
-    <div>
-      <button id="HighScores">HighScores</button>
-    </div>
-    <!-- this is to grab the name of the user-->
-    <form id="myName">
-      <input type="text" id="myName" name="myName" placeholder="Enter name" />
-      <button>Submit</button>
-    </form>
-    <!-- this is going to store the name & scores-->
-    <ul id="HighScores"></ul>
-    <li></li>
-
-
-
-    <!-- this is where the  results will sit-->
-    <div id="results"></div>
-
-<!-- This is where the timer is  -->
-</div>
-<div class= "card timer">
-  <div class = "timer-text">
-  <div class="large-font timer-count">10</div>
-  <h3>seconds remaining</h3>
-</div>
-
-  <script src="./assets/js/script.js"></script>
-</body>
-
-</html> -->
