@@ -1,3 +1,4 @@
+//ALL VARIABLES
 var timer;
 var timerCount;
 var timerElement = document.querySelector(".timer-count");
@@ -10,11 +11,11 @@ var playerName = "";
 var score = 0;
 var storedScores = JSON.parse(localStorage.getItem("userInfo"));
 var input;
-var myform = document.createElement("form");
-var questionCount = 0;
+var nameForm = document.createElement("form");
+var qNumber = 0;
 
 
-
+//THE QUESTIONS
 
 var questions = [
   {
@@ -53,7 +54,7 @@ var questions = [
 function startQuiz() {
   timerCount = 60;
   // Prevents start button from being clicked when round is in progress
-  currentQuestion = questions[questionCount];
+  currentQuestion = questions[qNumber];
   startButton.disabled = false;
   startButton.style.display = 'none';
   askQ(currentQuestion);
@@ -109,6 +110,31 @@ function askQ(q) {
 
 };
 
+//DISPLAY NEXT QUESTION
+function nextQ(event) {
+  qNumber++
+  if (qNumber < questions.length) {
+    isCorrect(event.target.innerText == currentQuestion.answer)
+    if (qNumber < questions.length) {
+      currentQuestion = questions[qNumber]
+      askQ(currentQuestion)
+    } else {
+      qNumber = 0
+ }
+
+  } else {
+    displayScore();
+  }
+
+}
+
+
+//FIRST PAGE ON RELOAD
+function goToStart() {
+
+  location.reload();
+  return;
+}
 
 //CHECK ANSWER & ADJUST SCORE
 function isCorrect(response) {
