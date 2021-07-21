@@ -2,17 +2,21 @@
 var timer;
 var timerCount;
 var timerElement = document.querySelector(".timer-count");
+
 var startButton = document.querySelector("#start-button");
 var mainQuestionArea = document.querySelector("#questionArea");
+var storedScores = JSON.parse(localStorage.getItem("userInfo"));
 var alert = document.querySelector(".alert");
-var currentQuestion;
-var scoreList = [];
+var nameForm = document.createElement("form");
+
 var playerName = "";
 var score = 0;
-var storedScores = JSON.parse(localStorage.getItem("userInfo"));
 var input;
-var nameForm = document.createElement("form");
 var qNumber = 0;
+var currentQuestion;
+var scoreList = [];
+
+
 
 
 //THE QUESTIONS
@@ -55,6 +59,7 @@ function startQuiz() {
   timerCount = 60;
   // Prevents start button from being clicked when round is in progress
   currentQuestion = questions[qNumber];
+  startButton.disabled = false;
   startButton.style.display = 'none';
   askQ(currentQuestion);
   startTimer()
@@ -103,7 +108,7 @@ function askQ(q) {
     button.className = "btn-primary btn-block text-left"
     button.innerText = element
     mainQuestionArea.appendChild(button)
-    timerCount--;
+    // timerCount--;
     button.addEventListener("click", nextQ)
   });
 
@@ -138,7 +143,7 @@ function displayScore() {
   nameForm.className = "inputForm";
   var label = document.createElement("label");
   label.innerText = "Please enter your name...             ";
-  nameForm.appendChild(labl);
+  nameForm.appendChild(label);
   //INPUT SPACE
   input = document.createElement("input");
   input.value = "";
@@ -173,11 +178,11 @@ function displayScores(event) {
     inits: playerName,
     userScore: score
   };
-
+  
 //PUSH TO LOCAL STORAGE - users name
   mainQuestionArea.innerHTML = "";
   scoreList.push(userInfo);
-  localStorage.setItem("useInfo", JSON.stringify(scoreList));
+  localStorage.setItem("userInfo", JSON.stringify(scoreList));
 
   //CREATE SCORE ITEM FOR EACH LIST ITEM
   if (storedScores !== null) {
@@ -195,7 +200,7 @@ function displayScores(event) {
     list.className = "scoreListClass";
     //creating and adding to the list
     var scoreEntry = document.createElement("li");
-    scoreEntry.innerHTML = userInfo.inits + " - " 
+    scoreEntry.innerHTML = userInfo.inits + " - " + userInfo.userScore;
     list.appendChild(scoreEntry);
 
   }
@@ -232,11 +237,7 @@ function displayScores(event) {
     // displayScores(e);
     return;
   }
-
-
-
 }
-
 
 //CHECK ANSWER & ADJUST SCORE
 function isCorrect(response) {
@@ -246,8 +247,8 @@ function isCorrect(response) {
     score = score + 10;
   } else {
     alert.innerText = "Wrong! Better luck next time.";
-    if ((timerCount - 5) > 0) {
-      timerCount = timerCount - 5;
+    if ((timerCount ) > 0) {
+      // timerCount = timerCount;
       timer.innerHTML = timerCount;
     } else {
       timerCount = 0;
