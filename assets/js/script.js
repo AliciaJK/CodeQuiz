@@ -35,6 +35,12 @@ var questions = [
     answer: "all of the above",
   },
   {
+    question: "Who was the first computer programmer?",
+    options: ["NASA scientists", "Amelia Earhart", "Ada Lovelace", "Eiyprograhm Seeplus"],
+    answer: "Ada Lovelace",
+  },
+
+  {
     question: "String values must be enclosed within what character/s when being assigned to variables?",
     options: ["commas", "curly brackets", "quotes", "parenthesis"],
     answer: "quotes",
