@@ -31,21 +31,21 @@ var questions = [
 
   },
   {
-    question: "Arrays in javascript can be used to store ____",
+    question: "Arrays in Javascript can be used to store what variables?",
     options: ["numbers and strings", "other arrays", "booleans", "all of the above"],
     answer: "all of the above",
 
   },
   {
-    question: "String values must be enclosed within ___ when being assigned to variables",
+    question: "String values must be enclosed within what character/s when being assigned to variables?",
     options: ["commas", "curly brackets", "quotes", "parenthesis"],
     answer: "quotes",
 
   },
   {
-    question: "A very useful tool used during development and debugging for printing content to the debugger is: ",
-    options: ["Javascript", "terminal/bash", "for loops", "console.log"],
-    answer: "console.log",
+    question: "What is a very useful tool to see your errors on the web? ",
+    options: ["Your computer", "Terminal", "GitBash", "Inspect"],
+    answer: "Inspect",
 
   }
 ]
@@ -55,7 +55,6 @@ function startQuiz() {
   timerCount = 60;
   // Prevents start button from being clicked when round is in progress
   currentQuestion = questions[qNumber];
-  startButton.disabled = false;
   startButton.style.display = 'none';
   askQ(currentQuestion);
   startTimer()
@@ -128,13 +127,116 @@ function nextQ(event) {
 
 }
 
+// ASK FOR NAME
+function displayScore() {
+  clearInterval(timer);
+  mainQuestionArea.innerHTML = "You score is: " + score + "!";
 
-//FIRST PAGE ON RELOAD
-function goToStart() {
+ // //NAME FORM
+  var nameForm = document.createElement("form");
+  nameForm.method = "get";
+  nameForm.className = "inputForm";
+  var label = document.createElement("label");
+  label.innerText = "Please enter your name...             ";
+  nameForm.appendChild(labl);
+  //INPUT SPACE
+  input = document.createElement("input");
+  input.value = "";
+  input.name = "name";
+  input.id = "InputName";
+  playerName = input.value;
+  nameForm.appendChild(input);
+  //SAVE
+  var submitButton = document.createElement("button");
+  submitButton.className = "btn-initals";
+  submitButton.innerText = "Save";
+  nameForm.appendChild(submitButton);
+  mainQuestionArea.appendChild(nameForm);
 
-  location.reload();
-  return;
+  //LISTEN FOR INPUT
+  input.addEventListener("input", myScript);
+  //NAME AND ADD TO VARIABLE
+  function myScript(e) {
+    playerName = playerName + e.data;
+
+  };
+
+  submitButton.addEventListener("click", displayScores);
+
 }
+
+//DISPLAY SCORES
+function displayScores(event) {
+
+  event.preventDefault();
+  var userInfo = {
+    inits: playerName,
+    userScore: score
+  };
+
+//PUSH TO LOCAL STORAGE - users name
+  mainQuestionArea.innerHTML = "";
+  scoreList.push(userInfo);
+  localStorage.setItem("useInfo", JSON.stringify(scoreList));
+
+  //CREATE SCORE ITEM FOR EACH LIST ITEM
+  if (storedScores !== null) {
+    var list = document.createElement("ol");
+    list.className = "scoreListClass";
+    for (var i = 0; i < scoreList.length; i++) {
+      var yourName = scoreList[i].inits;
+      var scores = scoreList[i].userScore
+      var scoreEntry = document.createElement("li");
+      scoreEntry.innerHTML = yourName + " - " + scores;
+      list.appendChild(scoreEntry);
+    }
+  } else {
+    var list = document.createElement("ol");
+    list.className = "scoreListClass";
+    //creating and adding to the list
+    var scoreEntry = document.createElement("li");
+    scoreEntry.innerHTML = userInfo.inits + " - " 
+    list.appendChild(scoreEntry);
+
+  }
+  //ACTUALLY UPDATE THE CHILD
+  mainQuestionArea.appendChild(list);
+
+
+  //PLAY GAME AGAIN
+  var resetGame = document.createElement("button")
+  resetGame.className = "btn-primary"
+  resetGame.innerText = "Play again!"
+  resetGame.addEventListener("click", goToStart);
+  mainQuestionArea.appendChild(resetGame);
+
+  //CLEAR ALL SCORES
+  var clearAll = document.createElement("button")
+  clearAll.className = "btn-primary"
+  clearAll.innerText = "CLEAR ALL"
+  clearAll.addEventListener("click", clearScores);
+  mainQuestionArea.appendChild(clearAll);
+
+
+
+  //RESET ALL, CLEAR ALL
+  function clearScores(e) {
+
+    localStorage.clear();
+    list.innerHTML = "";
+    list.clear
+    scoreList.clear;
+    if (storedScores !== null) {
+      storedScores.clear;
+    }
+    // displayScores(e);
+    return;
+  }
+
+
+
+}
+
 
 //CHECK ANSWER & ADJUST SCORE
 function isCorrect(response) {
