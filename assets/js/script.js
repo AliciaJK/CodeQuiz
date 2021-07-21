@@ -4,7 +4,7 @@ var timerCount;
 var timerElement = document.querySelector(".timer-count");
 
 var startButton = document.querySelector("#start-button");
-var mainQuestionArea = document.querySelector("#questionArea");
+var QuestionDisplay = document.querySelector("#questionArea");
 var storedScores = JSON.parse(localStorage.getItem("userInfo"));
 var alert = document.querySelector(".alert");
 var nameForm = document.createElement("form");
@@ -16,9 +16,6 @@ var qNumber = 0;
 var currentQuestion;
 var scoreList = [];
 
-
-
-
 //THE QUESTIONS
 
 var questions = [
@@ -26,37 +23,32 @@ var questions = [
     question: "In JavaScript, what element is used to store multiple values in a single variable?",
     options: ["Variables", "Strings", "Arrays", "Functions"],
     answer: "Arrays",
-
   },
   {
-    question: "The action of having something be completed over and over again is called what",
+    question: "The action of having something be completed over and over is called what?",
     options: ["Bug", "Sequence", "Loop", "Program"],
     answer: "Loop",
-
   },
   {
     question: "Arrays in Javascript can be used to store what variables?",
     options: ["numbers and strings", "other arrays", "booleans", "all of the above"],
     answer: "all of the above",
-
   },
   {
     question: "String values must be enclosed within what character/s when being assigned to variables?",
     options: ["commas", "curly brackets", "quotes", "parenthesis"],
     answer: "quotes",
-
   },
   {
     question: "What is a very useful tool to see your errors on the web? ",
     options: ["Your computer", "Terminal", "GitBash", "Inspect"],
     answer: "Inspect",
-
   }
 ]
 
 // START THE QUIZ
 function startQuiz() {
-  timerCount = 60;
+  timerCount = 45;
   // Prevents start button from being clicked when round is in progress
   currentQuestion = questions[qNumber];
   startButton.disabled = false;
@@ -66,15 +58,16 @@ function startQuiz() {
 }
 
 
-// START THE TIMER
+// START THE TIMER -- same as classwork problems
 function startTimer() {
   // Sets timer
   startButton.disabled = false;
   timer = setInterval(function () {
+    //decrease the timer
     timerCount--;
     timerElement.textContent = "Timer: " + timerCount;
     if (timerCount >= 0) {
-      // Tests if win condition is met
+      // Tests if win condition is met because if the 
       if (timerCount <= 0) {
         // Clears interval and stops timer
         clearInterval(timer);
@@ -101,13 +94,13 @@ if (storedScores !== null) {
 //DISPLAY THE QUESTION ON THE PAGE
 function askQ(q) {
 
-  mainQuestionArea.innerHTML = "";
-  mainQuestionArea.innerText = "Question: " + q.question;
+  QuestionDisplay.innerHTML = "";
+  QuestionDisplay.innerText = q.question;
   q.options.forEach(element => {
     var button = document.createElement("button")
     button.className = "btn-primary btn-block text-left"
     button.innerText = element
-    mainQuestionArea.appendChild(button)
+    QuestionDisplay.appendChild(button)
     // timerCount--;
     button.addEventListener("click", nextQ)
   });
@@ -135,7 +128,7 @@ function nextQ(event) {
 // ASK FOR NAME
 function displayScore() {
   clearInterval(timer);
-  mainQuestionArea.innerHTML = "You score is: " + score + "!";
+  QuestionDisplay.innerHTML = "You score is: " + score + "!";
 
  // //NAME FORM
   var nameForm = document.createElement("form");
@@ -156,7 +149,7 @@ function displayScore() {
   submitButton.className = "btn-initals";
   submitButton.innerText = "Save";
   nameForm.appendChild(submitButton);
-  mainQuestionArea.appendChild(nameForm);
+  QuestionDisplay.appendChild(nameForm);
 
   //LISTEN FOR INPUT
   input.addEventListener("input", myScript);
@@ -180,7 +173,7 @@ function displayScores(event) {
   };
   
 //PUSH TO LOCAL STORAGE - users name
-  mainQuestionArea.innerHTML = "";
+  QuestionDisplay.innerHTML = "";
   scoreList.push(userInfo);
   localStorage.setItem("userInfo", JSON.stringify(scoreList));
 
@@ -205,7 +198,7 @@ function displayScores(event) {
 
   }
   //ACTUALLY UPDATE THE CHILD
-  mainQuestionArea.appendChild(list);
+  QuestionDisplay.appendChild(list);
 
 
   //PLAY GAME AGAIN
@@ -213,14 +206,14 @@ function displayScores(event) {
   resetGame.className = "btn-primary"
   resetGame.innerText = "Play again!"
   resetGame.addEventListener("click", goToStart);
-  mainQuestionArea.appendChild(resetGame);
+  QuestionDisplay.appendChild(resetGame);
 
   //CLEAR ALL SCORES
   var clearAll = document.createElement("button")
   clearAll.className = "btn-primary"
   clearAll.innerText = "CLEAR ALL"
   clearAll.addEventListener("click", clearScores);
-  mainQuestionArea.appendChild(clearAll);
+  QuestionDisplay.appendChild(clearAll);
 
 
 
