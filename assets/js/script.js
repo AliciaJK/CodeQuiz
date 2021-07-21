@@ -206,23 +206,6 @@ function displayScores(event) {
   //ACTUALLY UPDATE THE CHILD
   QuestionDisplay.appendChild(list);
 
-
-  //PLAY GAME AGAIN
-  var resetGame = document.createElement("button")
-  resetGame.className = "btn-primary"
-  resetGame.innerText = "Play again!"
-  resetGame.addEventListener("click", goToStart);
-  QuestionDisplay.appendChild(resetGame);
-
-  //CLEAR ALL SCORES
-  var clearAll = document.createElement("button")
-  clearAll.className = "btn-primary"
-  clearAll.innerText = "CLEAR ALL"
-  clearAll.addEventListener("click", clearScores);
-  QuestionDisplay.appendChild(clearAll);
-
-
-
   //RESET ALL, CLEAR ALL
   function clearScores(e) {
 
