@@ -221,6 +221,23 @@ function displayScores(event) {
   }
 }
 
+  //  //PREVIOUS
+  //  var goBackButton =document.createElement("button")
+  //  goBackButton.className="btn-primary"
+  //  goBackButton.innerText= "PREVIOUS"
+  //  mainQuestionArea.appendChild(goBackButton);
+  //  goBackButton.addEventListener("click", goToStart);
+
+  //  //CLEAR
+  //  var clearButton =document.createElement("button")
+  //  clearButton.className="btn-primary"
+  //  clearButton.innerText= "Clear All"
+  //  mainQuestionArea.appendChild(clearButton);
+  //  clearButton.addEventListener("click", clearScores);
+
+
+  
+
 //CHECK ANSWER & ADJUST SCORE
 function isCorrect(response) {
 
@@ -229,8 +246,8 @@ function isCorrect(response) {
     score = score + 10;
   } else {
     alert.innerText = "Wrong! Better luck next time.";
-    if ((timerCount ) > 0) {
-      // timerCount = timerCount;
+    if ((timerCount -5) > 0) {
+      timerCount = timerCount -5;
       timer.innerHTML = timerCount;
     } else {
       timerCount = 0;
